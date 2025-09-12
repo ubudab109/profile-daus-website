@@ -7,16 +7,16 @@ const Portfolio = ({ portfolios }) => {
     const [isLoadingFetchingDetail, setIsLoadingFetchingDetail] =
         useState(false);
     const [detailPortfolioData, setDetailPortfolioData] = useState({
-			id: '',
-			title: '',
-			category: '',
-			url: '',
-			description: '',
-			start_date: '',
-			end_date: '',
-			stack: [],
-			images: [],
-		});
+        id: "",
+        title: "",
+        category: "",
+        url: "",
+        description: "",
+        start_date: "",
+        end_date: "",
+        stack: [],
+        images: [],
+    });
 
     const detailPortfolio = async (id) => {
         setIsOpenPortfolio(true);
@@ -36,20 +36,20 @@ const Portfolio = ({ portfolios }) => {
         setIsLoadingFetchingDetail(false);
     };
 
-		const closeModalDetailPortofolio = () => {
-			setIsOpenPortfolio(false);
-			setDetailPortfolioData({
-				id: '',
-				title: '',
-				category: '',
-				url: '',
-				description: '',
-				start_date: '',
-				end_date: '',
-				stack: [],
-				images: [],
-			});
-		}
+    const closeModalDetailPortofolio = () => {
+        setIsOpenPortfolio(false);
+        setDetailPortfolioData({
+            id: "",
+            title: "",
+            category: "",
+            url: "",
+            description: "",
+            start_date: "",
+            end_date: "",
+            stack: [],
+            images: [],
+        });
+    };
 
     return (
         <section id="portfolio" className="portfolio section-bg">
@@ -72,26 +72,28 @@ const Portfolio = ({ portfolios }) => {
                                 <div className="col-lg-6 col-md-12 text-center">
                                     <div className="card">
                                         <div className="card-body">
-                                            <Carousel data-bs-theme="dark">
-                                                {detailPortfolioData.images.map(
-                                                    (image) => (
-                                                        <Carousel.Item
-                                                            key={image.key}
-                                                        >
-                                                            <img
-                                                                src={
-                                                                    image
-                                                                        .initialPreview[0]
-                                                                }
-                                                                alt=""
-                                                                style={{
-                                                                    width: "100%",
-                                                                }}
-                                                            />
-                                                        </Carousel.Item>
-                                                    )
-                                                )}
-                                            </Carousel>
+                                            {detailPortfolioData.images ? (
+                                                <Carousel data-bs-theme="dark">
+                                                    {detailPortfolioData.images.map(
+                                                        (image) => (
+                                                            <Carousel.Item
+                                                                key={image.key}
+                                                            >
+                                                                <img
+                                                                    src={
+                                                                        image
+                                                                            .initialPreview[0]
+                                                                    }
+                                                                    alt=""
+                                                                    style={{
+                                                                        width: "100%",
+                                                                    }}
+                                                                />
+                                                            </Carousel.Item>
+                                                        )
+                                                    )}
+                                                </Carousel>
+                                            ) : null}
                                         </div>
                                     </div>
                                 </div>
@@ -102,26 +104,50 @@ const Portfolio = ({ portfolios }) => {
                                         <h3>Project information</h3>
                                         <ul className="portfolio-info-ul">
                                             <li className="portfolio-info-li">
-                                                <strong>Category</strong>: {detailPortfolioData.category}
+                                                <strong>Category</strong>:{" "}
+                                                {detailPortfolioData.category}
                                             </li>
                                             <li className="portfolio-info-li">
-                                                <strong>Client or Company</strong>: {detailPortfolioData.company}
+                                                <strong>
+                                                    Client or Company
+                                                </strong>
+                                                : {detailPortfolioData.company}
                                             </li>
                                             <li className="portfolio-info-li">
-                                                <strong>Project date</strong>: {detailPortfolioData.start_date} - {detailPortfolioData.end_date ?? 'Present'}
+                                                <strong>Project date</strong>:{" "}
+                                                {detailPortfolioData.start_date}{" "}
+                                                -{" "}
+                                                {detailPortfolioData.end_date ??
+                                                    "Present"}
                                             </li>
                                             <li className="portfolio-info-li">
                                                 <strong>Project URL</strong>:{" "}
-                                                <a href={detailPortfolioData.url} target="_blank" rel="noreferrer">
-																									{detailPortfolioData.url}
-																								</a>
+                                                <a
+                                                    href={
+                                                        detailPortfolioData.url
+                                                    }
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    {detailPortfolioData.url}
+                                                </a>
                                             </li>
-																						<li className="portfolio-info-li">
-                                                <strong>Stack</strong>: {
-																									detailPortfolioData.stack.map((data, key) => (
-																										<span className="badge bg-secondary" style={{ marginRight: '3px'}} key={key}>{data}</span>
-																									))
-																								}
+                                            <li className="portfolio-info-li">
+                                                <strong>Stack</strong>:{" "}
+                                                {detailPortfolioData.stack.map(
+                                                    (data, key) => (
+                                                        <span
+                                                            className="badge bg-secondary"
+                                                            style={{
+                                                                marginRight:
+                                                                    "3px",
+                                                            }}
+                                                            key={key}
+                                                        >
+                                                            {data}
+                                                        </span>
+                                                    )
+                                                )}
                                             </li>
                                         </ul>
                                     </div>
@@ -131,7 +157,11 @@ const Portfolio = ({ portfolios }) => {
                                 <div className="col-12">
                                     <div className="portfolio-info description">
                                         <h2>Description</h2>
-																				<div dangerouslySetInnerHTML={{ __html: detailPortfolioData.description }} />
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: detailPortfolioData.description,
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>

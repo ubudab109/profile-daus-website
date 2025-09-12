@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import About from "./Components/About";
 import Header from "./Components/Header";
 import Hero from "./Components/Hero";
@@ -18,6 +18,8 @@ function App() {
     const [skills, setSkills] = useState([]);
     const [portfolios, setPortfolios] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const mobileNavActiveRef = useRef(false);
+    const iconRef = useRef(null);
 
     const getSkills = async () => {
         await axios
@@ -49,21 +51,22 @@ function App() {
             let state = [];
             for (let i = 0; i < data.length; i++) {
                 let imageArrays = [];
-                let images = JSON.parse(data[i].images);
-                if (Array.isArray(images)) {
-                    imageArrays = images;
-                } else {
-                    imageArrays = Object.values(images);
+                if (data[i].images){
+                    let images = JSON.parse(data[i].images);
+                    if (Array.isArray(images)) {
+                        imageArrays = images;
+                    } else {
+                        imageArrays = Object.values(images);
+                    }
                 }
                 state.push({
                     id: data[i].id,
                     title: data[i].title,
-                    first_image: imageArrays[0].initialPreview[0],
+                    first_image: imageArrays.length > 0 ? imageArrays[0].initialPreview[0] : null,
                 });
             }
             setPortfolios(state);
         });
-        console.log(portfolios);
     };
 
     const getAllData = async () => {
@@ -79,12 +82,45 @@ function App() {
         getAllData();
     }, []);
 
+    const toggleMobileNav = () => {
+        // toggle state ref
+        mobileNavActiveRef.current = !mobileNavActiveRef.current;
+
+        // toggle body class
+        if (mobileNavActiveRef.current) {
+            document.body.classList.add("mobile-nav-active");
+        } else {
+            document.body.classList.remove("mobile-nav-active");
+        }
+
+        // toggle icon class
+        if (iconRef.current) {
+            iconRef.current.classList.toggle("bi-x");
+            iconRef.current.classList.toggle("bi-list");
+        }
+    };
+
+    const onClickMenu = () => {
+        if (mobileNavActiveRef.current) {
+            mobileNavActiveRef.current = false;
+            document.body.classList.remove("mobile-nav-active");
+            if (iconRef.current) {
+                iconRef.current.classList.remove("bi-x");
+                iconRef.current.classList.add("bi-list");
+            }
+        }
+    };
+
     if (!isLoading) {
         return (
             <div className="App">
                 {/* Mobile nav toggle button */}
-                <i className="bi bi-list mobile-nav-toggle d-xl-none"></i>
-                <Header />
+                <i
+                    ref={iconRef}
+                    onClick={toggleMobileNav}
+                    className="bi mobile-nav-toggle d-xl-none bi-list"
+                ></i>
+                <Header onClickMenu={() => onClickMenu()} />
                 <Hero />
                 <main id="main">
                     {/* ABOUT SECTION */}
