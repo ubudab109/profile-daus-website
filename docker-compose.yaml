@@ -22,7 +22,7 @@ services:
     image: ubudab109/myproject-frontend:latest
     container_name: frontend
     ports:
-      - "3000:80"
+      - "3003:80"
 
   db:
     image: mysql:8
