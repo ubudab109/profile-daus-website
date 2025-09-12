@@ -13,14 +13,11 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy composer files first
-COPY composer.json composer.lock ./
+# COPY all source code **before** composer install
+COPY . .
 
 # Install dependencies (vendor akan ada di image)
 RUN COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader
-
-# Copy source code
-COPY . .
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache \
