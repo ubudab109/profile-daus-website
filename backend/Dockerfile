@@ -12,14 +12,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy composer files first (caching layer)
-COPY backend/composer.json backend/composer.lock ./
+# Copy composer files first 
+COPY composer.json composer.lock ./
 
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Copy rest of the application
-COPY backend ./
+# Copy  source code
+COPY . .
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache \
