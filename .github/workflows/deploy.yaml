@@ -49,14 +49,14 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            mkdir -p ~/apps
-            if [ ! -d "~/apps/myproject/.git" ]; then
-              git clone https://github.com/ubudab109/profile-daus-website.git ~/apps/myproject
-            fi
+            mkdir -p ~/apps/myproject
             cd ~/apps/myproject
-            git pull origin main
+            
+            # Hanya pull image CI/CD, jangan clone git lagi
             docker-compose pull
             docker-compose up -d
+
+            # Jalankan Makefile commands
             docker-compose exec backend php artisan key:generate
             docker-compose exec backend php artisan storage:link
             docker-compose exec backend php artisan migrate

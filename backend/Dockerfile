@@ -13,10 +13,10 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# COPY all source code **before** composer install
+# Copy all source code **before** composer install
 COPY . .
 
-# Install dependencies (vendor akan ada di image)
+# Install dependencies (vendor ada di image)
 RUN COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader
 
 # Set permissions
