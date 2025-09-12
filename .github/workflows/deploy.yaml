@@ -57,3 +57,7 @@ jobs:
             git pull origin main
             docker-compose pull
             docker-compose up -d
+            docker-compose exec backend php artisan key:generate
+            docker-compose exec backend php artisan storage:link
+            docker-compose exec backend php artisan migrate
+            docker-compose exec backend php artisan db:seed
