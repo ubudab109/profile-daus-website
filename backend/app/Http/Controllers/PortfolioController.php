@@ -29,14 +29,16 @@ class PortfolioController extends Controller
 
         $input = $request->all();
         $images = [];
-        foreach($input['images'] as $image) {
-            $images[] = $image;
+        if (isset($input['images'])) {
+            foreach($input['images'] as $image) {
+                $images[] = $image;
+            }
         }
         DB::table('portofolios')->insert([
             'title' => $input['title'],
             'category' => $input['category'],
             'url' => $input['url'],
-            'images' => json_encode($images),
+            'images' => !empty($images) ? json_encode($images) : null,
             'stack' => json_encode($input['stack']),
             'start_date' => $input['start_date'],
             'end_date' => $input['end_date'],
@@ -82,7 +84,7 @@ class PortfolioController extends Controller
 
         $input = $request->all();
         $currentData = DB::table('portofolios')->find($request->id);
-        $currentImages = json_decode($currentData->images);
+        $currentImages = $currentData->images ? json_decode($currentData->images) : [];
         if (isset($input['images']) && !empty($input['images'])) {
             $imageData = [];
             foreach($input['images'] as $image) {

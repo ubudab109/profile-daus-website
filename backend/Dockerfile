@@ -1,6 +1,6 @@
 FROM php:8.3-fpm
 
-# Install dependencies + GD
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libzip-dev libonig-dev libxml2-dev curl \
     libjpeg-dev libpng-dev libfreetype6-dev default-mysql-client \
@@ -12,7 +12,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy backend source code only
+# Copy backend source code
 COPY . /var/www
 RUN composer install --no-dev --optimize-autoloader
 
@@ -21,4 +21,6 @@ RUN chmod -R 775 storage bootstrap/cache
 RUN chown -R www-data:www-data /var/www
 
 EXPOSE 9000
+
+# Default command (production uses nginx + php-fpm)
 CMD ["php-fpm"]
