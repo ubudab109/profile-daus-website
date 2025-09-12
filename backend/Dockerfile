@@ -1,6 +1,17 @@
+# Stage 1: Composer vendor builder
+FROM composer:2 AS vendor
+WORKDIR /app
+
+# Copy composer files
+COPY composer.json composer.lock ./
+
+# Install vendor deps (tanpa dev, optimize)
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Stage 2: PHP-FPM app
 FROM php:8.3-fpm
 
-# Install dependencies
+# Install PHP extensions
 RUN apt-get update && apt-get install -y \
     git unzip libpq-dev libzip-dev libonig-dev libxml2-dev curl \
     libjpeg-dev libpng-dev libfreetype6-dev default-mysql-client \
@@ -8,19 +19,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip mbstring pcntl bcmath sockets gd intl
 
-# Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 WORKDIR /var/www
 
-# Copy composer files first 
-COPY composer.json composer.lock ./
-
-# Install dependencies
-RUN COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 composer install --no-dev --optimize-autoloader --no-scripts
-
-# Copy source code
+# Copy app source
 COPY . .
+
+# Copy vendor from builder stage
+COPY --from=vendor /app/vendor ./vendor
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache \
