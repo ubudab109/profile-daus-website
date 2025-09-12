@@ -12,18 +12,15 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy composer files first 
-COPY composer.json composer.lock ./
-
-# Install dependencies
+# Copy backend source code
+COPY . /var/www
 RUN composer install --no-dev --optimize-autoloader
 
-# Copy  source code
-COPY . .
-
 # Set permissions
-RUN chmod -R 775 storage bootstrap/cache \
-    && chown -R www-data:www-data /var/www
+RUN chmod -R 775 storage bootstrap/cache
+RUN chown -R www-data:www-data /var/www
 
 EXPOSE 9000
+
+# Default command (production uses nginx + php-fpm)
 CMD ["php-fpm"]
