@@ -1,12 +1,8 @@
 # Stage 1: Composer vendor builder
 FROM composer:2 AS vendor
 WORKDIR /app
-
-# Copy composer files
 COPY composer.json composer.lock ./
-
-# Install vendor deps (tanpa dev, optimize)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --prefer-dist
 
 # Stage 2: PHP-FPM app
 FROM php:8.3-fpm
@@ -24,7 +20,7 @@ WORKDIR /var/www
 # Copy app source
 COPY . .
 
-# Copy vendor from builder stage
+# Copy vendor dari builder stage
 COPY --from=vendor /app/vendor ./vendor
 
 # Set permissions
