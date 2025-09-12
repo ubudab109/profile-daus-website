@@ -29,7 +29,6 @@ jobs:
           COMPOSER_ALLOW_SUPERUSER: 1
           COMPOSER_MEMORY_LIMIT: -1
 
-
       - name: Build and push frontend
         uses: docker/build-push-action@v4
         with:
