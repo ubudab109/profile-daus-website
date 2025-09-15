@@ -10,8 +10,8 @@ services:
       - db
     networks:
       - app-network
-    expose:
-      - "9000"   # contoh: php-fpm listen port 9000
+    ports:
+      - "9000:9000"   # BUKA backend ke host VPS
 
   frontend:
     image: ubudab109/myproject-frontend:latest
@@ -21,8 +21,8 @@ services:
       - /app/node_modules
     networks:
       - app-network
-    expose:
-      - "3000"   # React app serve port
+    ports:
+      - "3000:80"   # BUKA frontend ke host VPS
 
   db:
     image: mysql:8
