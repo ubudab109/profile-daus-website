@@ -36,6 +36,8 @@ jobs:
           file: ./frontend/Dockerfile.prod
           push: true
           tags: ubudab109/myproject-frontend:latest
+          build-args: |
+            REACT_APP_BE_URL=${{ secrets.REACT_APP_BE_URL }}
         env: 
           REACT_APP_BE_URL: ${{ secrets.REACT_APP_BE_URL }}
 

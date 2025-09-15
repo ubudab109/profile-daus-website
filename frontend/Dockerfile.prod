@@ -4,6 +4,13 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY . .
+
+
+# Set build-time environment variable
+ARG REACT_APP_BE_URL
+ENV REACT_APP_BE_URL=$REACT_APP_BE_URL
+
+
 RUN yarn build
 
 # Production Nginx
