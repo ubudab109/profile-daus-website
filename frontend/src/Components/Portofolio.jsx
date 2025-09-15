@@ -200,7 +200,7 @@ const Portfolio = ({ portfolios }) => {
                             <div className="portfolio-wrap">
                                 <img
                                     src={data.first_image}
-                                    className="img-fluid"
+                                    className="img-fluid-portfolio"
                                     alt=""
                                 />
                                 <div className="portfolio-links">
