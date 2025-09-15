@@ -22,7 +22,7 @@ services:
     networks:
       - app-network
     ports:
-      - "3000:80"   # BUKA frontend ke host VPS
+      - "3008:80"   # BUKA frontend ke host VPS
 
   db:
     image: mysql:8
