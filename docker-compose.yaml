@@ -2,14 +2,16 @@ services:
   backend:
     image: ubudab109/myproject-backend:latest
     container_name: backend
+    volumes:
+      - ./backend:/var/www/html 
+    ports:
+      - "9000:9000"
+    networks:
+      - app-network
     env_file:
       - ./backend/.env
     depends_on:
       - db
-    networks:
-      - app-network
-    ports:
-      - "9000:9000"   # backend PHP-FPM listen di host VPS
 
   frontend:
     image: ubudab109/myproject-frontend:latest
