@@ -55,6 +55,7 @@ jobs:
             cd ~/apps/myproject
             git pull origin main
             docker-compose pull
-            docker-compose -f docker-compose.yaml up -d --build
+            make down
+            make up-prod-build
             docker exec backend chown -R www-data:www-data storage bootstrap/cache
             docker exec backend chmod -R 775 storage bootstrap/cache
