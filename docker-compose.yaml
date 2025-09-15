@@ -9,9 +9,11 @@ services:
     env_file:
       - ./backend/.env
     networks:
-      - app-network
-    depends_on:
-      - db
+      app-network:
+        aliases:
+          - backend
+    ports:
+      - "9000:9000"
 
   frontend:
     image: ubudab109/myproject-frontend:latest
