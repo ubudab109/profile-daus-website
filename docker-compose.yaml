@@ -35,6 +35,8 @@ services:
       - ./frontend:/app
     ports:
       - "3008:80"     # internal port untuk VPS Nginx
+    env_file:
+      - ./frontend/.env.production
     networks:
       - app-network
 
