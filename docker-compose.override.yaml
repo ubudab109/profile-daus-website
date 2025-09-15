@@ -2,7 +2,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.Dev
     container_name: backend
     volumes:
       - ./backend:/var/www:cached
@@ -15,7 +15,7 @@ services:
     image: nginx:alpine
     container_name: nginx-backend
     ports:
-      - "8080:80"   # dev backend di localhost:8080
+      - "8080:80"
     volumes:
       - ./backend:/var/www:cached
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro

@@ -1,4 +1,9 @@
-.PHONY: all build up down migrate seed storage key reset up-dev up-prod
+CERTBOT=docker-compose run --rm certbot
+WEBROOT=./certbot/www
+EMAIL=rizkyfirdaus0309@gmail.com
+
+
+.PHONY: all build up down migrate seed storage key reset up-dev up-prod ssl-backend ssl-frontend ssl-renew
 
 # Build production
 build:
@@ -13,10 +18,10 @@ up-prod-build:
 
 # Run development
 up-dev:
-	docker-compose up -d
+	docker-compose -f docker-compose.override.yaml up -d
 
 up-dev-build:
-	docker-compose up -d --build
+	docker-compose -f docker-compose.override.yaml up -d --build
 
 # Stop containers
 down:
@@ -35,11 +40,14 @@ storage:
 key:
 	docker-compose exec backend php artisan key:generate
 
+stop:
+	docker-compose stop
+
 # Full reset
 reset: down build up-prod
 
 build-backend-image:
-	docker build -t ubudab109/myproject-backend:latest ./backend
+	docker build -t ubudab109/myproject-backend:latest -f ./backend/Dockerfile.prod ./backend
 
 build-frontend-image:
 	docker build -t ubudab109/myproject-frontend:latest -f ./frontend/Dockerfile.prod ./frontend
@@ -49,3 +57,18 @@ push-backend-image:
 
 push-frontend-image:
 	docker push ubudab109/myproject-frontend:latest
+
+ssl-backend:
+	$(CERTBOT) certonly --webroot --webroot-path=$(WEBROOT) \
+		--email $(EMAIL) --agree-tos --no-eff-email \
+		-d api.rizkydausprofile.site
+
+# Issue SSL for frontend (React)
+ssl-frontend:
+	$(CERTBOT) certonly --webroot --webroot-path=$(WEBROOT) \
+		--email $(EMAIL) --agree-tos --no-eff-email \
+		-d rizkydausprofile.site
+
+# Renew all SSL certificates
+ssl-renew:
+	$(CERTBOT) renew
