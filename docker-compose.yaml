@@ -25,7 +25,7 @@ services:
     ports:
       - "8000:80"  # host aman, port 80 VPS bebas
     volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/prod-default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - backend
       - frontend
