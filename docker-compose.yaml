@@ -10,14 +10,14 @@ services:
       - db
     expose:
       - "9000"  # PHP-FPM internal
-    volumes:
-      - ./backend:/var/www/backend
+    # volumes:
+    #   - ./backend:/var/www/backend
 
   frontend:
     image: ubudab109/myproject-frontend:latest
     container_name: frontend
-    volumes:
-      - ./frontend/build:/var/www/frontend  # hasil build React
+    expose:
+      - "80"
 
   nginx:
     image: nginx:alpine
